@@ -1,26 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Grid, Typography } from "@material-ui/core";
+import SwipeCard from './components/SwipeCard';
+import IconsBar from './components/IconsBar';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Grid container justify="center" alignItems="center" wrap='wrap'>
+      <Grid item md={2} xs={0}></Grid>
+      <Grid item container direction='column' md={8} xs={12} alignItems='center'>
+          <SwipeCard />
+          <IconsBar />
+      </Grid>
+      <Grid item md={2} xs={0}></Grid>
+    </Grid>
+  )
+   
 }
 
 export default App;
