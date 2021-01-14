@@ -9,7 +9,7 @@ function App() {
       <Grid item md={2} xs={0}></Grid>
       <Grid item container direction='column' md={8} xs={12} alignItems='center'>
           <SwipeCard />
-          <IconsBar />
+          {/* <IconsBar /> */}
       </Grid>
       <Grid item md={2} xs={0}></Grid>
     </Grid>
