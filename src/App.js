@@ -5,11 +5,16 @@ import IconsBar from './components/IconsBar';
 
 function App() {
   return (
-    <>
-      <SwipeCard />
-      {/* <IconsBar /> */}
-    </>
+    
+    // Header menu
+
+    <SwipeCard />
+
+    // Footer?
+
   )
+
+    
 }
 
 export default App;

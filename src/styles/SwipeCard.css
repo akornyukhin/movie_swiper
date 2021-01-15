@@ -1,9 +1,9 @@
 .card {
     position: relative;
-    width: 600px;
+    width: 350px;
     padding: 20px;
     max-width: 85vw;
-    height: 50vh;
+    height: 70vh;
     border-radius: 20px;
     background-size: cover;
     background-position: center;
@@ -16,5 +16,5 @@
 .card > h3 {
     position: absolute;
     bottom: 10px;
-    color: black
+    color: whitesmoke
 }
