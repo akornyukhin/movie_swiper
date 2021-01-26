@@ -46,8 +46,8 @@ def get_room(room, prefix=True):
         emit('error', {'error': 'Unable to join, room does not exist.'})
         return None
 
-def save_game(room):
-    db.setex(room.room_id, REDIS_TTL_S, pickle.dumps(game))
+def save_room(room):
+    db.setex(room.room_id, REDIS_TTL_S, pickle.dumps(room))
 
 
 @socketio.on('connect')
