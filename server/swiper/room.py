@@ -1,6 +1,6 @@
 import random
 import string
-import players
+from swiper import players
 
 class Room(object):
     def __init__(self): 
