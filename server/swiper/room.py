@@ -8,6 +8,7 @@ class Room(object):
         self.players = players.Players()
         # self.movie_dict =
         self.picked_movies = {}
+        self.common_movies = {}
 
     @classmethod
     def generate_room_id(cls):
@@ -36,6 +37,10 @@ class Room(object):
             else:
                 self.picked_movies[sid].append(movie_title)
     
-    # def check_match(self):
-    #     for key, value in self.picked_movies.items():
-    #         print(value)
+    def check_match(self):
+        print(self.picked_movies)
+        print(self.picked_movies.values())
+        print(list(self.picked_movies.values()))
+        all_movies = list(self.picked_movies.values())
+        print(set(all_movies[0]).intersection(*all_movies[1:]))
+        self.common_movies = list(set(all_movies[0]).intersection(*all_movies[1:]))

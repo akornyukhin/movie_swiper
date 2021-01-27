@@ -3,12 +3,17 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { io } from 'socket.io-client';
+import { useHistory } from 'react-router-dom';
+import { useSocket } from '../context/socket'
+
 
 export default function Rooms() {
-    const socket = io('http://localhost:5000', {reconnectionAttempts: 5});
+    const { socket } = useSocket();
     
     const [roomId, setRoomId] = useState('Placeholder');
     const [numberOfPlayers, setNumberOfPlayers] = useState(0);
+
+    const history = useHistory();
   
     function createRoom(event) {
       socket.emit('create', (response) => {
@@ -22,6 +27,7 @@ export default function Rooms() {
       socket.emit('connect to room', roomId, (response) => {
         console.log(response)
         setNumberOfPlayers(response[1])
+        history.push(`/rooms/${roomId}`)
       })
     }
   
@@ -38,7 +44,7 @@ export default function Rooms() {
         </Grid>
       </Grid>
       <Grid item>
-        <TextField fullWidth={true} value={roomId} />
+        <TextField fullWidth={true} value={roomId} onChange={e => { setRoomId(e.target.value) }} />
           <Button variant="contained" color="default" onClick={connectToRoom}>
               Connect
           </Button>
