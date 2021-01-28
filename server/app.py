@@ -20,12 +20,12 @@ def index():
     return render_template('index.html')
 
 @socketio.on('create')
-def on_create():
+def on_create(name):
     # create new room
     rm = room.Room()
 
     # add current user to players list
-    rm.add_player(request.sid, "Alex")
+    rm.add_player(request.sid, name)
 
     # check if ID exists
     while(get_room(rm.room_id) is not None):
@@ -34,24 +34,26 @@ def on_create():
     # write room to redis
     join_room(rm.room_id)
     save_room(rm)
-    emit('join_room', {'room': rm.room_id})
+    emit('join_room', {'room': rm.room_id}, room=rm.room_id)
 
-    return [rm.room_id, len(rm.players.as_dict()['players'].keys())]
+    return [rm.room_id, rm.players.as_dict(), True]
 
 @socketio.on('connect to room')
-def connect_to_room(room_id):
+def connect_to_room(room_id, name):
 
     # get room
     rm = get_room(room_id)
 
     # add players 
-    rm.add_player(request.sid, "Alex1")
+    rm.add_player(request.sid, name)
     join_room(rm.room_id)
 
     # save room
     save_room(rm)
 
-    return [rm.players.as_dict(), len(rm.players.as_dict()['players'].keys())]
+    emit('join_room', {'room': rm.players.as_dict()}, room=rm.room_id, broadcast=True)
+
+    return [rm.players.as_dict(), False]
 
 @socketio.on('right swipe')
 def right_swipe(data):
