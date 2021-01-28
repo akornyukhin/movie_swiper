@@ -69,7 +69,7 @@ def right_swipe(data):
 
     # add movie to players list
     rm.right_swipe(request.sid, data['movie_title'])
-#    rm.check_match()
+    rm.check_match()
     save_room(rm)
 
     return [rm.picked_movies, rm.common_movies]
@@ -90,16 +90,11 @@ def save_room(room):
 def scheduled_checker():
     print("SCHEDULLER WORKING")
     all_rooms = db.keys('*')
-    for i in all_rooms:
-        print(i.decode())
-        rm = db.get(i.decode())
-        data = pickle.loads(rm)
-        if len(data.players.all_players) <= 1:
-            pass
-        else:
-            all_movies = list(data.picked_movies.values())
-            common_movies = list(set(all_movies[0]).intersection(*all_movies[1:]))
-            print(common_movies)
+    for room_id in all_rooms:
+        print(room_id)
+        rm = get_room(room_id)
+        rm.check_match()
+        print(rm.common_movies)
 
 # @socketio.on('connect')
 # def connection():
