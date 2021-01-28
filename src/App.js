@@ -10,7 +10,7 @@ import { SocketContext } from "./context/socket";
 import Lobby from './components/Lobby';
 
 function App() {
-  const socket = io('http://localhost:5000', {reconnectionAttempts: 5});
+  const socket = io('http://ugol.space:5000', {reconnectionAttempts: 5});
   return (
     <SocketContext.Provider value={{ socket: socket}}>
       <Grid container direction='column' alignItems='center'>

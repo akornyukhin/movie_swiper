@@ -6,11 +6,16 @@ import os
 import logging
 from swiper import room
 
+from apscheduler.schedulers.background import BackgroundScheduler
+import time
+
 app = Flask(__name__)
 socketio = SocketIO(app,
 #  debug=True,
  cors_allowed_origins="*")
 
+scheduler = BackgroundScheduler()
+scheduler.start()
 
 REDIS_TTL_S = 60*10 if os.environ.get('FLASK_DEV', False) else 60*60*12
 db = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
@@ -35,6 +40,8 @@ def on_create(name):
     join_room(rm.room_id)
     save_room(rm)
     emit('join_room', {'room': rm.room_id}, room=rm.room_id)
+
+    scheduler.add_job(func=scheduled_checker,trigger='interval',seconds=5,id=rm.room_id)
 
     return [rm.room_id, rm.players.as_dict(), True]
 
@@ -62,7 +69,7 @@ def right_swipe(data):
 
     # add movie to players list
     rm.right_swipe(request.sid, data['movie_title'])
-    rm.check_match()
+#    rm.check_match()
     save_room(rm)
 
     return [rm.picked_movies, rm.common_movies]
@@ -79,6 +86,20 @@ def get_room(room, prefix=True):
 def save_room(room):
     db.setex(room.room_id, REDIS_TTL_S, pickle.dumps(room))
 
+
+def scheduled_checker():
+    print("SCHEDULLER WORKING")
+    all_rooms = db.keys('*')
+    for i in all_rooms:
+        print(i.decode())
+        rm = db.get(i.decode())
+        data = pickle.loads(rm)
+        if len(data.players.all_players) <= 1:
+            pass
+        else:
+            all_movies = list(data.picked_movies.values())
+            common_movies = list(set(all_movies[0]).intersection(*all_movies[1:]))
+            print(common_movies)
 
 # @socketio.on('connect')
 # def connection():
