@@ -26,4 +26,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .eslintcache
+.eslintcache
 package-lock.json
+
+*pycache*

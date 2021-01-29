@@ -5,25 +5,30 @@ import '../styles/SwipeCard.css';
 import database from '../firebase/firebase';
 import { useParams } from "react-router-dom";
 import { useSocket } from '../context/socket';
+import { useGame } from '../context/game'
 
 export default function SwipeCard() {
 
     const { id } = useParams();
     const { socket } = useSocket();
 
+    const { gameData } = useGame();
+
     const [people, setPeople] = useState([]);
 
-    useEffect(() => {
+    // useEffect(() => {
         
-        const unsubscribe = database.collection('people').onSnapshot((snapshot) => setPeople(snapshot.docs.map((doc) => doc.data())))  
+    //     const unsubscribe = database.collection('people').onSnapshot((snapshot) => setPeople(snapshot.docs.map((doc) => doc.data())))  
 
-        return () => { unsubscribe() }
+    //     return () => { unsubscribe() }
 
-    }, [])
+    // }, [])
 
-    function onSwipe(direction, person) {
+
+
+    function onSwipe(direction, movieTitle) {
         if (direction === 'right') {
-            socket.emit('right swipe', {"room_id": id, "movie_title": person}, (response) => {
+            socket.emit('right swipe', {"room_id": id, "movie_title": movieTitle}, (response) => {
                 console.log(response)
               })
         }
@@ -34,17 +39,20 @@ export default function SwipeCard() {
             <h1>Tinder cards</h1>
             <h1> ID: {id} </h1>
             <Grid container justifyContent='center' justify='center'>
-                {people.map((person) => (
+                {gameData.map((movie) => (
                     <TinderCard
                     className='swipe'
-                    key={person.name}
-                    onSwipe={(direction) => onSwipe(direction, person.name)}
+                    key={movie.name}
+                    onSwipe={(direction) => onSwipe(direction, movie.name)}
                     preventSwipe={['up', 'down']}>
                         <div 
-                        style={{ backgroundImage: `url(${person.url})` }}
+                        style={{ backgroundImage: `url(${movie.poster_src})` }}
                         className='card'>
-                            <h3>{person.name}</h3>
-                        </div> 
+                            <h3>{movie.name}</h3>
+                        </div>
+                        {/* <div>
+                            <h3>{movie.description}</h3>  
+                        </div> */}
                     </TinderCard>
                 ))}
             </Grid>

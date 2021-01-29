@@ -18,9 +18,9 @@ soup = BeautifulSoup(resp, 'html.parser')
 
 movies_list = []
 
-rd = redis.Redis()
+rd = redis.StrictRedis(host='127.0.0.1', port=6379, db=1)
 
-for title in soup.find_all('td', {'class': 'titleColumn'})[:249]:
+for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
     
     title_a = title.find('a')
     movie_url = domain_url + title_a.get_attribute_list('href')[0]
@@ -32,13 +32,18 @@ for title in soup.find_all('td', {'class': 'titleColumn'})[:249]:
     if len(redis_db_response) == 0:
 
         movie_page_soup = BeautifulSoup(r.get(movie_url).text, 'html.parser')
-        movie_poster_src = movie_page_soup.find_all('div', {'class':'poster'})[0].find('img').get_attribute_list('src')[0]
+        
         movie_description = movie_page_soup.find_all('body')[0].find_all('div', {'id': 'wrapper'})[0].find_all('div', {'class':'summary_text'})[0].contents[0].strip()
+
+        poster_page = domain_url + movie_page_soup.find_all('div', {'class':'poster'})[0].find('a').get_attribute_list('href')[0]
+        poster_page_soup = BeautifulSoup(r.get(poster_page).text, 'html.parser')
+        poster_id = poster_page.split('/')[-1]
+        poster_src = poster_page_soup.select('img[data-image-id*="-curr"]')[0].get_attribute_list('src')[0]
 
         movie_dict = {
             'name': movie_name,
             'description': movie_description,
-            'poster_src': movie_poster_src,
+            'poster_src': poster_src,
             'movie_url': movie_url
         }
 
