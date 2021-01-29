@@ -27,8 +27,8 @@ export default function Lobby() {
       });
 
     socket.on("game_started", (response) =>{
-        setGameData(response.movies)
         history.push(`/game/${id}`)
+        setGameData(response.movies)
     })
 
     function startGame() {

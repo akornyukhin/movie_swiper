@@ -1,0 +1,7 @@
+- name: Deploy IOT app to docker compose
+  hosts: '{{ deploy_host }}'
+  gather_facts: no
+  tasks:
+    - include_role:
+        name: deploy-docker-compose
+        

@@ -63,7 +63,7 @@ def connect_to_room(room_id, name):
     # save room
     save_room(rm)
 
-    emit('join_room', {'room': rm.players.as_dict()}, room=rm.room_id, broadcast=True, include_self=True)
+    emit('join_room', {'room': rm.players.as_dict()}, room=rm.room_id, broadcast=True)
 
     return [rm.players.as_dict(), False]
 
