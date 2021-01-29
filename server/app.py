@@ -11,7 +11,7 @@ import time
 
 app = Flask(__name__)
 socketio = SocketIO(app,
-#  debug=True,
+ debug=True,
  cors_allowed_origins="*")
 
 scheduler = BackgroundScheduler()
@@ -73,6 +73,11 @@ def right_swipe(data):
     save_room(rm)
 
     return [rm.picked_movies, rm.common_movies]
+
+@socketio.on('start_game')
+def start_game(room_id):
+    emit('game_started', room=room_id, broadcast=True)
+    return 'Started'
 
 
 def get_room(room, prefix=True):

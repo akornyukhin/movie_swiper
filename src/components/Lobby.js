@@ -4,13 +4,14 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 import { useParams } from "react-router-dom";
 import { useSocket } from '../context/socket';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 
 
 
 export default function Lobby() {
 
     const location = useLocation();
+    const history = useHistory();
 
     const { id } = useParams();
     const { socket } = useSocket();
@@ -22,7 +23,16 @@ export default function Lobby() {
         setPlayers(response.room.players); 
       });
 
-    console.log(admin)
+    socket.on("game_started", (response) =>{
+        history.push(`/game/${id}`)
+    })
+
+    function startGame() {
+        socket.emit('start_game', id)
+        // , (response) => {
+        //     history.push(`/game/${id}`)
+        //   })
+    }
     
     return (
         <Grid container direction='column' justify='center' spacing={3} style={{paddingTop: 150}}>
@@ -31,7 +41,7 @@ export default function Lobby() {
             </Grid>
             <Grid item>
                 { admin ? 
-                    (<Button variant="contained" fullWidth={true} color="primary">
+                    (<Button variant="contained" fullWidth={true} color="primary" onClick={startGame}>
                         Start
                     </Button>) :
                     (<Typography variant="body1" color="initial">Wait game to start</Typography>)
