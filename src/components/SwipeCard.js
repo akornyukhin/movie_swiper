@@ -3,18 +3,24 @@ import TinderCard from 'react-tinder-card';
 import Grid from '@material-ui/core/Grid';
 import '../styles/SwipeCard.css';
 import database from '../firebase/firebase';
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useSocket } from '../context/socket';
-import { useGame } from '../context/game'
+import { useGame } from '../context/game';
+
 
 export default function SwipeCard() {
+
+    const location = useLocation();
 
     const { id } = useParams();
     const { socket } = useSocket();
 
-    const { gameData } = useGame();
+    // const { gameData } = useGame();
 
     const [people, setPeople] = useState([]);
+
+    const [gameData, setGameData] = useState(location.state.movies);
+
 
     // useEffect(() => {
         
@@ -23,8 +29,6 @@ export default function SwipeCard() {
     //     return () => { unsubscribe() }
 
     // }, [])
-
-
 
     function onSwipe(direction, movieTitle) {
         if (direction === 'right') {

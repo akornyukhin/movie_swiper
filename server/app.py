@@ -13,7 +13,10 @@ import time
 app = Flask(__name__)
 socketio = SocketIO(app,
  debug=True,
- cors_allowed_origins="*")
+ cors_allowed_origins="*",
+ manage_session=True,
+ logger=True,
+ engineio_logger=True)
 
 
 REDIS_TTL_S = 60*10 if os.environ.get('FLASK_DEV', False) else 60*60*12
@@ -76,7 +79,7 @@ def right_swipe(data):
 
     # add movie to players list
     rm.right_swipe(request.sid, data['movie_title'])
-    # rm.check_match()
+    rm.check_match()
     save_room(rm)
 
     return [rm.picked_movies, rm.common_movies]
@@ -125,9 +128,9 @@ def scheduled_checker():
         print(rm.common_movies)
 
 
-# scheduler = BackgroundScheduler()
-# scheduler.add_job(func=scheduled_checker,trigger='interval',seconds=10,id=str(int(time.time())))
-# scheduler.start()
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=scheduled_checker,trigger='interval',seconds=10,id=str(int(time.time())))
+scheduler.start()
 
 
 
