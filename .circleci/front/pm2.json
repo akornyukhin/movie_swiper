@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "IOT",
+      "script": "npm",
+      "args": "start"
+    }
+  ]
+}

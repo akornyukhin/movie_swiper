@@ -1,0 +1,145 @@
+version: 2.1
+
+# orbs:
+#   base: dialogue/base@1.9.0
+
+executors:
+  docker-executor:
+    docker:
+      - image: docker:19.03.12
+        auth:
+          username: $DOCKER_HUB_USER
+          password: $DOCKER_HUB_PASSWORD
+  docker-ansible-executor:
+    docker:
+      - image: alpine:3.12
+        auth:
+          username: $DOCKER_HUB_USER
+          password: $DOCKER_HUB_PASSWORD  
+
+jobs:
+  build-front:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.12
+      - run: 
+          name: Build Front and Push it to Docker Hub 
+          command: |
+            echo $DOCKER_HUB_PASSWORD
+            echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
+            docker build -t ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1 .
+            docker push ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1
+
+  build-back:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.12
+      - run:
+          name: Build Back and Push it to Docker Hub
+          command: |
+            echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
+            docker build -t ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1 ./api
+            docker push ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1
+
+  deploy-stage:
+    executor: docker-ansible-executor
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "8b:e3:65:42:f0:ff:74:56:e4:5b:a4:ff:f1:ab:d9:b5"
+      - run:
+          name: Deploy with Ansible to Dev [ugol.space]
+          command: |
+            cat ~/.ssh/config
+            apk add ansible openssh-client
+            mkdir -p ~/.ssh && chmod 700 ~/.ssh
+            cd ./deploy/ansible
+            ls -la
+            ansible-playbook -i hosts.yaml deploy-docker-compose-play.yaml -e "\
+            deploy_host=ugol \
+            deploy_host_domain=ugol.space \
+            commit_hash=$CIRCLE_SHA1 \
+            docker_hub_user_var=$DOCKER_HUB_USER \
+            docker_hub_pass_var=$DOCKER_HUB_PASSWORD \
+            docker_compose_template_path=/docker-compose.j2"
+
+          environment:
+             ANSIBLE_HOST_KEY_CHECKING: 'False'
+      
+  # deploy-prod:
+  #   executor: docker-ansible-executor
+  #   steps:
+  #     - checkout
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "8b:e3:65:42:f0:ff:74:56:e4:5b:a4:ff:f1:ab:d9:b5"
+  #     - run:
+  #         name: Deploy with Ansible to Prod [fitness01]
+  #         command: |
+  #           cat ~/.ssh/config
+  #           apk add ansible openssh-client
+  #           mkdir -p ~/.ssh && chmod 700 ~/.ssh
+  #           cd ./deploy/ansible
+  #           ansible-playbook -i hosts.yaml deploy-docker-compose-play.yaml -e "\
+  #           deploy_host=ugol \
+  #           deploy_host_domain=ugol.space \
+  #           commit_hash=$CIRCLE_SHA1 \
+  #           docker_hub_user_var=$DOCKER_HUB_USER \
+  #           docker_hub_pass_var=$DOCKER_HUB_PASSWORD \
+  #           docker_compose_template_path=/docker-compose.j2"
+
+  #         environment:
+  #             ANSIBLE_HOST_KEY_CHECKING: 'False'
+
+
+workflows:
+  version: 2
+  build_and_push:
+    jobs:
+      - build-front:
+          context:
+            - movie-swiper-CI-CD-context
+          filters:
+            branches:
+              only:
+              - dopil
+
+      - build-back:
+          requires:
+            - build-front
+          context:
+            - movie-swiper-CI-CD-context
+          filters:
+            branches:
+              only:
+              - dopil 
+
+      - deploy-stage:
+          requires:
+            - build-back
+          context:
+            - movie-swiper-CI-CD-context
+          filters:
+            branches:
+              only:
+              - dopil
+
+      # - deploy-prod-approval:
+      #     requires:
+      #       - deploy-stage
+      #     type: approval
+
+      # - deploy-prod:
+      #     requires:
+      #       - deploy-prod-approval
+      #     context:
+      #       - fitness-app-CI-CD-context
+      #     filters:
+      #       branches:
+      #         only:
+      #         - master

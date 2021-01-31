@@ -30,6 +30,7 @@ class Room(object):
 
     def right_swipe(self, sid, movie_title):
         if sid not in self.players.as_dict()['players'].keys():
+            print(sid)
             print("No such player")
         else:
             if sid not in self.picked_movies.keys():
@@ -38,9 +39,15 @@ class Room(object):
                 self.picked_movies[sid].append(movie_title)
     
     def check_match(self):
-        print(self.picked_movies)
-        print(self.picked_movies.values())
-        print(list(self.picked_movies.values()))
-        all_movies = list(self.picked_movies.values())
-        print(set(all_movies[0]).intersection(*all_movies[1:]))
-        self.common_movies = list(set(all_movies[0]).intersection(*all_movies[1:]))
+        # print(self.picked_movies)
+        # print(self.picked_movies.values())
+        # print(list(self.picked_movies.values()))
+        if len(self.picked_movies.values()) > 1:
+            all_movies = list(self.picked_movies.values())
+            # print(set(all_movies[0]).intersection(*all_movies[1:]))
+            if len(all_movies) != 0:
+                self.common_movies = list(set(all_movies[0]).intersection(*all_movies[1:]))
+            else:
+                print('No intersection yet')
+        else:
+            print('0 or 1 person swiped right')
