@@ -1,12 +1,15 @@
+
 .card {
     position: relative;
     width: 350px;
     padding: 20px;
     max-width: 85vw;
-    height: 70vh;
+    height: 60vh;
     border-radius: 20px;
     background-size: cover;
     background-position: center;
+    border: solid;
+    border-width: thin;
 }
 
 .swipe {
@@ -20,3 +23,36 @@
     color: black;
     background-color: white;
 }
+
+.buttons {
+    margin: 20px;
+    display: flex;
+    /* position: fixed; */
+    /* bottom: 0; */
+  }
+
+.bottom {
+    margin: 20px;
+    /* display: flex; */
+    position: fixed;
+    bottom: 0;
+}
+  
+.buttons button {
+    flex-shrink: 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    background-color: #000102;
+    transition: 200ms;
+    margin: 0 10px;
+    font-weight: bolder;
+    width: 160px;
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.10);
+  }
+  
+.buttons button:hover {
+    transform: scale(1.05);
+  }

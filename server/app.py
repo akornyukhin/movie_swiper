@@ -125,7 +125,10 @@ def scheduled_checker():
         # print(room_id)
         rm = get_room(room_id)
         rm.check_match()
+        # This line doesn't work for some reason
+        emit('check_match', {'matched_movies': rm.common_movies}, room=room_id, broadcast=True)
         print(rm.common_movies)
+    
 
 
 scheduler = BackgroundScheduler()
