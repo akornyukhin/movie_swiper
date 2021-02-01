@@ -29,8 +29,9 @@ jobs:
           command: |
             echo $DOCKER_HUB_PASSWORD
             echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
-            docker build -t ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1 .
-            docker push ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1
+            ls -la
+            # docker build -t ommzzz/projects:movie-swiper-$CIRCLE_SHA1 .
+            # docker push ommzzz/projects:movie-swiper-$CIRCLE_SHA1
 
   build-back:
     executor: docker-executor
@@ -42,8 +43,8 @@ jobs:
           name: Build Back and Push it to Docker Hub
           command: |
             echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
-            docker build -t ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1 ./api
-            docker push ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1
+            docker build -t ommzzz/projects:movie-swiper-$CIRCLE_SHA1 ./
+            docker push ommzzz/projects:movie-swiper-$CIRCLE_SHA1
 
   deploy-stage:
     executor: docker-ansible-executor
@@ -109,25 +110,25 @@ workflows:
               only:
               - ci_tests
 
-      - build-back:
-          requires:
-            - build-front
-          context:
-            - movie-swiper-CI-CD-context
-          filters:
-            branches:
-              only:
-              - ci_tests
+      # - build-back:
+      #     requires:
+      #       - build-front
+      #     context:
+      #       - movie-swiper-CI-CD-context
+      #     filters:
+      #       branches:
+      #         only:
+      #         - ci_tests
 
-      - deploy-stage:
-          requires:
-            - build-back
-          context:
-            - movie-swiper-CI-CD-context
-          filters:
-            branches:
-              only:
-              - ci_tests
+      # - deploy-stage:
+      #     requires:
+      #       - build-back
+      #     context:
+      #       - movie-swiper-CI-CD-context
+      #     filters:
+      #       branches:
+      #         only:
+      #         - ci_tests
 
       # - deploy-prod-approval:
       #     requires:
