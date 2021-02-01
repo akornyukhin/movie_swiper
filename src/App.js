@@ -12,7 +12,13 @@ import Lobby from './components/Lobby';
 
 
 function App() {
-  const socket = io('http://127.0.0.1:5000', {reconnectionAttempts: 5});
+
+
+  const apiUrl = process.env.REACT_APP_API_URL
+
+
+  const socket = io(`http://${apiUrl}:5000`, {reconnectionAttempts: 5});
+
 
   const [gameData, setGameData] = useState([]);
 

@@ -107,7 +107,7 @@ workflows:
           filters:
             branches:
               only:
-              - dopil
+              - ci_tests
 
       - build-back:
           requires:
@@ -117,7 +117,7 @@ workflows:
           filters:
             branches:
               only:
-              - dopil 
+              - ci_tests
 
       - deploy-stage:
           requires:
@@ -127,7 +127,7 @@ workflows:
           filters:
             branches:
               only:
-              - dopil
+              - ci_tests
 
       # - deploy-prod-approval:
       #     requires:
