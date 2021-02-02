@@ -1,8 +1,5 @@
 version: 2.1
 
-# orbs:
-#   base: dialogue/base@1.9.0
-
 executors:
   docker-executor:
     docker:
