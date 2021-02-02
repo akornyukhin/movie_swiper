@@ -9,7 +9,7 @@ WORKDIR /app
 COPY /src src/
 COPY /public public/
 COPY /package*.json /app/
-COPY /.circleci/front/pm2.* /app/
+COPY /.circleci/front/pm2.json /app/
 
 # Install app dependencies
 RUN npm install --production
