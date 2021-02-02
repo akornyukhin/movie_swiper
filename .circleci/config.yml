@@ -49,7 +49,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "df:36:11:23:1e:6d:ef:b0:ec:ad:e0:74:7e:6a:2c:1e"
+            - "e3:36:95:cd:20:63:11:e6:a6:8f:18:28:88:41:77:b1"
       - run:
           name: Deploy with Ansible to Dev [ugol.space]
           command: |
