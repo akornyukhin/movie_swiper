@@ -30,8 +30,8 @@ jobs:
             echo $DOCKER_HUB_PASSWORD
             echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
             ls -la
-            # docker build -t ommzzz/projects:movie-swiper-$CIRCLE_SHA1 .
-            # docker push ommzzz/projects:movie-swiper-$CIRCLE_SHA1
+            docker build -t ommzzz/projects:movie-swiper-$CIRCLE_SHA1 .
+            docker push ommzzz/projects:movie-swiper-$CIRCLE_SHA1
 
   build-back:
     executor: docker-executor
