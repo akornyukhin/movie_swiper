@@ -1,0 +1,40 @@
+version: '3.3'
+#jinja2: lstrip_blocks: “True”
+
+services:
+
+    front:
+        image: ommzzz/projects:movie-swiper-front-3943839230adbc81b928c4f5d8bdb17e5681b5fe
+
+        container_name: fitness-APP-front
+
+        restart: always
+
+        ports:
+          - "3000:3000"
+
+        environment:
+          REACT_APP_API_URL: http://ugol.space
+          REACT_APP_FRONT_URL: http://ugol.space
+
+
+    back:
+        image: ommzzz/projects:movie-swiper-back-3943839230adbc81b928c4f5d8bdb17e5681b5fe
+
+        container_name: fitness-APP-back
+
+        restart: always
+
+        ports:
+          - "5000:80"
+
+        environment:
+          ## Flask configs
+          FLASK_APP: app.py
+          FLASK_ENV: 'development'
+
+          ## Useful variables
+          SERVER_NAME: ugol.space
+          FRONT_NAME: ugol.space
+
+        command: ['python3', '/app/app.py']

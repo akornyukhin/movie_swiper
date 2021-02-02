@@ -8,4 +8,4 @@ COPY requirements.txt /app/
 
 RUN pip3 install -r requirements.txt
 RUN apt-get update && apt-get install vim -y
-RUN echo 'Europe/Moscow' > /etc/timezone
+#RUN echo 'Europe/Moscow' > /etc/timezone
