@@ -57,7 +57,7 @@ jobs:
             # cat ~/.ssh/config
             apk add ansible openssh-client
             mkdir -p ~/.ssh && chmod 700 ~/.ssh
-            cd .circleci/deploy/ansible
+            cd .circleci/ansible
             ls -la
             ansible-playbook -i hosts.yaml deploy-docker-compose-play.yaml -e "\
             deploy_host=ugol \
