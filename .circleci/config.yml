@@ -27,8 +27,8 @@ jobs:
             echo $DOCKER_HUB_PASSWORD
             echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
             ls -la
-            docker build -t ommzzz/projects:movie-swiper-$CIRCLE_SHA1 .
-            docker push ommzzz/projects:movie-swiper-$CIRCLE_SHA1
+            docker build -t ommzzz/projects:movie-swiper-front-$CIRCLE_SHA1 -f ./.circleci/front/Dockerfile . 
+            docker push ommzzz/projects:movie-swiper-front-$CIRCLE_SHA1
 
   build-back:
     executor: docker-executor
@@ -40,8 +40,8 @@ jobs:
           name: Build Back and Push it to Docker Hub
           command: |
             echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
-            docker build -t ommzzz/projects:movie-swiper-$CIRCLE_SHA1 ./
-            docker push ommzzz/projects:movie-swiper-$CIRCLE_SHA1
+            docker build -t ommzzz/projects:movie-swiper-back-$CIRCLE_SHA1 -f ./.circleci/back/Dockerfile ./server
+            docker push ommzzz/projects:movie-swiper-back-$CIRCLE_SHA1 
 
   deploy-stage:
     executor: docker-ansible-executor
