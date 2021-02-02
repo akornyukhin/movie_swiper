@@ -110,25 +110,25 @@ workflows:
               only:
               - ci_tests
 
-      # - build-back:
-      #     requires:
-      #       - build-front
-      #     context:
-      #       - movie-swiper-CI-CD-context
-      #     filters:
-      #       branches:
-      #         only:
-      #         - ci_tests
+      - build-back:
+          requires:
+            - build-front
+          context:
+            - movie-swiper-CI-CD-context
+          filters:
+            branches:
+              only:
+              - ci_tests
 
-      # - deploy-stage:
-      #     requires:
-      #       - build-back
-      #     context:
-      #       - movie-swiper-CI-CD-context
-      #     filters:
-      #       branches:
-      #         only:
-      #         - ci_tests
+      - deploy-stage:
+          requires:
+            - build-back
+          context:
+            - movie-swiper-CI-CD-context
+          filters:
+            branches:
+              only:
+              - ci_tests
 
       # - deploy-prod-approval:
       #     requires:
