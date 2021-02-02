@@ -98,27 +98,27 @@ workflows:
   version: 2
   build_and_push:
     jobs:
-      # - build-front:
-      #     context:
-      #       - movie-swiper-CI-CD-context
-      #     filters:
-      #       branches:
-      #         only:
-      #         - ci_tests
+      - build-front:
+          context:
+            - movie-swiper-CI-CD-context
+          filters:
+            branches:
+              only:
+              - ci_tests
 
-      # - build-back:
-      #     requires:
-      #       - build-front
-      #     context:
-      #       - movie-swiper-CI-CD-context
-      #     filters:
-      #       branches:
-      #         only:
-      #         - ci_tests
+      - build-back:
+          requires:
+            - build-front
+          context:
+            - movie-swiper-CI-CD-context
+          filters:
+            branches:
+              only:
+              - ci_tests
 
       - deploy-stage:
-          # requires:
-          #   - build-back
+          requires:
+            - build-back
           context:
             - movie-swiper-CI-CD-context
           filters:
