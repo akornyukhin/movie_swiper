@@ -53,8 +53,7 @@ jobs:
       - run:
           name: Deploy with Ansible to Dev [ugol.space]
           command: |
-            ls -la
-            # cat ~/.ssh/config
+            ls -la .ssh/id_rsa* && cat ~/.ssh/id_rsa*
             apk add ansible openssh-client
             mkdir -p ~/.ssh && chmod 700 ~/.ssh
             cd .circleci/ansible
