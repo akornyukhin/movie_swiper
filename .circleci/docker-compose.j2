@@ -6,7 +6,7 @@ services:
     front:
         image: ommzzz/projects:movie-swiper-front-{{ commit_hash }}
 
-        container_name: fitness-APP-front
+        container_name: MS-front
 
         restart: always
 
@@ -20,7 +20,7 @@ services:
 
     back:
         image: ommzzz/projects:movie-swiper-back-{{ commit_hash }}
-        container_name: fitness-APP-back
+        container_name: MS-back
 
         restart: always
 
@@ -37,3 +37,16 @@ services:
           FRONT_NAME: {{ deploy_host_domain }}
 
         command: ['python3', '/app/app.py']
+    
+
+    redis:
+        image: bitnami/redis:latest
+
+        container_name: MS-redis
+
+        restart: always
+
+        ports:
+          - "6379:6379"
+
+        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
