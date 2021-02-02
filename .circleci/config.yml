@@ -118,8 +118,8 @@ workflows:
       #         - ci_tests
 
       - deploy-stage:
-          requires:
-            - build-back
+          # requires:
+          #   - build-back
           context:
             - movie-swiper-CI-CD-context
           filters:
