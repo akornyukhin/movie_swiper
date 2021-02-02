@@ -5,8 +5,10 @@ import '../styles/SwipeCard.css';
 import database from '../firebase/firebase';
 import { useParams, useLocation } from "react-router-dom";
 import { useSocket } from '../context/socket';
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Carousel from 'react-material-ui-carousel';
+import { Paper } from '@material-ui/core'
 
 const alreadyRemoved = []
 export default function SwipeCard() {
@@ -83,17 +85,26 @@ export default function SwipeCard() {
                     </TinderCard>
                 ))}  
             <div className='bottom'>
-                {matchedMovies.length && matchedMovies.map((movie, index) => (
-                    <div style={{textAlign: 'center'}}>{movie}</div>
-                ))}
-            <div className='buttons'>
-            <Button variant="contained" color="default" onClick={() => swipe('left')}>
-              Left
-            </Button>
-            <Button variant="contained" color="default" onClick={() => swipe('right')}>
-              Right
-            </Button>
-            </div> 
+                <div className='buttons'>
+                    <Button variant="contained" color="default" onClick={() => swipe('left')}>
+                    Left
+                    </Button>
+                    <Button variant="contained" color="default" onClick={() => swipe('right')}>
+                    Right
+                    </Button>
+                </div>
+                 {/* <div className='movies'> */}
+                 <Carousel animation='slide' autoPlay={false}>
+                    {matchedMovies.length && matchedMovies.map((movie, index) => (
+                            <>
+                            <div className='movie'>
+                                {movie}
+                                <p>Description</p>
+                            </div>
+                            </>
+                        ))}
+                </Carousel>  
+                {/* </div> */}
             </div>
             </Grid>
             
