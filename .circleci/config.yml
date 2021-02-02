@@ -53,7 +53,7 @@ jobs:
       - run:
           name: Deploy with Ansible to Dev [ugol.space]
           command: |
-            cat ~/.ssh/config
+            # cat ~/.ssh/config
             apk add ansible openssh-client
             mkdir -p ~/.ssh && chmod 700 ~/.ssh
             cd ./deploy/ansible
@@ -99,23 +99,23 @@ workflows:
   version: 2
   build_and_push:
     jobs:
-      - build-front:
-          context:
-            - movie-swiper-CI-CD-context
-          filters:
-            branches:
-              only:
-              - ci_tests
+      # - build-front:
+      #     context:
+      #       - movie-swiper-CI-CD-context
+      #     filters:
+      #       branches:
+      #         only:
+      #         - ci_tests
 
-      - build-back:
-          requires:
-            - build-front
-          context:
-            - movie-swiper-CI-CD-context
-          filters:
-            branches:
-              only:
-              - ci_tests
+      # - build-back:
+      #     requires:
+      #       - build-front
+      #     context:
+      #       - movie-swiper-CI-CD-context
+      #     filters:
+      #       branches:
+      #         only:
+      #         - ci_tests
 
       - deploy-stage:
           requires:
