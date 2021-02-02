@@ -4,7 +4,7 @@ version: '3.3'
 services:
 
     front:
-        image: ommzzz/projects:movie-swiper-front-3943839230adbc81b928c4f5d8bdb17e5681b5fe
+        image: ommzzz/projects:movie-swiper-front-{{ commit_hash }}
 
         container_name: fitness-APP-front
 
@@ -19,8 +19,7 @@ services:
 
 
     back:
-        image: ommzzz/projects:movie-swiper-back-3943839230adbc81b928c4f5d8bdb17e5681b5fe
-
+        image: ommzzz/projects:movie-swiper-back-{{ commit_hash }}
         container_name: fitness-APP-back
 
         restart: always
