@@ -63,7 +63,7 @@ jobs:
             commit_hash=$CIRCLE_SHA1 \
             docker_hub_user_var=$DOCKER_HUB_USER \
             docker_hub_pass_var=$DOCKER_HUB_PASSWORD \
-            docker_compose_template_path=/docker-compose.j2"
+            docker_compose_template_path=../docker-compose.j2"
 
           environment:
              ANSIBLE_HOST_KEY_CHECKING: 'False'
