@@ -119,14 +119,14 @@ def get_swipe_list():
         return None
 
 
-def check_match_emit(common_movies, room_id):
-        # print('sending message')
-        # print(room_id.decode('utf-8'))
-        socketio.emit('check_match', {'matched_movies': common_movies}, room=room_id.decode('utf-8'), broadcast=True)
+# def check_match_emit(common_movies, room_id):
+#         # print('sending message')
+#         # print(room_id.decode('utf-8'))
+#         socketio.emit('check_match', {'matched_movies': common_movies}, room=room_id.decode('utf-8'), broadcast=True)
 
 
+@app.route('/check_movies')
 def scheduled_checker():
-    print("SCHEDULLER WORKING: {}. AT TIME: {}".format(scheduler.get_jobs(), time.asctime()))
     all_rooms = db.keys('*')
     for room_id in all_rooms:
         # print(room_id)
@@ -134,11 +134,11 @@ def scheduled_checker():
         rm.check_match()
         # This line doesn't work for some reason
         socketio.emit('check_match', {'matched_movies': rm.common_movies}, room=rm.room_id, broadcast=True)
+    return 'checked'
 
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=scheduled_checker,trigger='interval',seconds=10,id=str(int(time.time())))
-scheduler.start()
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(func=scheduled_checker,trigger='interval',seconds=10,id=str(int(time.time())))
+# scheduler.start()
 
 
 

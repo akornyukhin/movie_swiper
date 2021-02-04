@@ -24,6 +24,7 @@ export default function Lobby() {
       });
 
     socket.on("game_started", (response) => {
+        console.log(response)
         history.push({pathname: `/game/${id}`, state: { movies: response.movies }});
     })
 

@@ -51,8 +51,7 @@ export default function SwipeCard() {
     }
 
     socket.on("check_match", (response) => {
-        alert(response);
-        console.log(response);
+        // console.log(response);
         setMatchedMovies(response.matched_movies);
     })
 
