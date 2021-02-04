@@ -2,13 +2,11 @@ import React, { useState, useRef, useMemo } from 'react';
 import TinderCard from 'react-tinder-card';
 import Grid from '@material-ui/core/Grid';
 import '../styles/SwipeCard.css';
-import database from '../firebase/firebase';
 import { useParams, useLocation } from "react-router-dom";
 import { useSocket } from '../context/socket';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Carousel from 'react-material-ui-carousel';
-import { Paper } from '@material-ui/core'
 
 const alreadyRemoved = []
 export default function SwipeCard() {
@@ -27,7 +25,7 @@ export default function SwipeCard() {
         // console.log('removing: ' + movieTitle)
         alreadyRemoved.push(movieTitle)
         if (direction === 'right') {
-            socket.emit('right swipe', {"room_id": id, "movie_title": movieTitle}, (response) => {
+            socket.emit('right_swipe', {"room_id": id, "movie_title": movieTitle}, (response) => {
                 // console.log(response)
                 setMatchedMovies(response[1])
                 // console.log(matchedMovies)
@@ -52,15 +50,11 @@ export default function SwipeCard() {
         }
     }
 
-    socket.on("check_match", (response) =>{
-        console.log(response)
-        setMatchedMovies(response.movies)
+    socket.on("check_match", (response) => {
+        alert(response);
+        console.log(response);
+        setMatchedMovies(response.matched_movies);
     })
-    
-    // function swipe(dir) {
-    //     childRefs[index].current.swipe(dir)
-    //     // console.log(childRefs)
-    // }
 
     return (
         <div>

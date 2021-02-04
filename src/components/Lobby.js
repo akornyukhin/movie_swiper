@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import { useParams } from "react-router-dom";
 import { useSocket } from '../context/socket';
 import { useLocation, useHistory } from 'react-router-dom';
-import { useGame } from '../context/game'
 
 
 
@@ -17,8 +16,6 @@ export default function Lobby() {
     const { id } = useParams();
     const { socket } = useSocket();
 
-    const { setGameData } = useGame();
-
     const [players, setPlayers] = useState(location.state.players.players);
     const [admin, setAdmin] = useState(location.state.admin);
 
@@ -26,16 +23,12 @@ export default function Lobby() {
         setPlayers(response.room.players);
       });
 
-    socket.on("game_started", (response) =>{
-        history.push({pathname: `/game/${id}`, state: { movies: response.movies }})
-        // setGameData(response.movies)
+    socket.on("game_started", (response) => {
+        history.push({pathname: `/game/${id}`, state: { movies: response.movies }});
     })
 
     function startGame() {
-        socket.emit('start_game', id)
-        // , (response) => {
-        //     history.push(`/game/${id}`)
-        //   })
+        socket.emit('start_game', id);
     }
     
     return (
