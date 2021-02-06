@@ -12,7 +12,7 @@ import Lobby from './components/Lobby';
 
 
 function App() {
-  const socket = io('http://127.0.0.1:5000', {reconnectionAttempts: 5});
+  const socket = io('http://ugol.space:5000', {reconnectionAttempts: 5});
 
   const [gameData, setGameData] = useState([]);
 
