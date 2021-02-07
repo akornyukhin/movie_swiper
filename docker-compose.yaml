@@ -4,9 +4,9 @@ version: '3.3'
 services:
 
     front:
-        image: ommzzz/projects:movie-swiper-front-85aef101f09345240453cc32bce2b587dc671ce3
+        image: ommzzz/projects:movie-swiper-front-6a57832603457e93ac8f60479a3fd081a5fb3aaf
 
-        container_name: fitness-APP-front
+        container_name: MS-front
 
         restart: always
 
@@ -19,8 +19,8 @@ services:
 
 
     back:
-        image: ommzzz/projects:movie-swiper-back-85aef101f09345240453cc32bce2b587dc671ce3
-        container_name: fitness-APP-back
+        image: ommzzz/projects:movie-swiper-back-6a57832603457e93ac8f60479a3fd081a5fb3aaf
+        container_name: MS-back
 
         restart: always
 
@@ -37,3 +37,15 @@ services:
           FRONT_NAME: ugol.space
 
         command: ['python3', '/app/app.py']
+
+    redis:
+        image: bitnami/redis:latest
+
+        container_name: MS-redis
+
+        restart: always
+
+        ports:
+          - "9736:6379"
+
+        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
