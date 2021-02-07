@@ -14,8 +14,6 @@ export default function Home() {
     const [roomId, setRoomId] = useState('');
     const [hostName, setHostName] = useState('');
     const [name, setName] = useState('');
-    const [players, setPlayers] = useState({});
-    const [swipeList, setSwipeList] = useState([]);
 
     const history = useHistory();
   
@@ -26,7 +24,7 @@ export default function Home() {
     }
   
     function connectToRoom() {
-      socket.emit('connect to room', roomId, name, (response) => {
+      socket.emit('connect_to_room', roomId, name, (response) => {
         console.log(response)
         history.push({pathname: `/lobby/${roomId}`, state: { players: response[0], admin: response[1] }})
       })

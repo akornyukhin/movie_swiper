@@ -53,7 +53,7 @@ def on_create(name):
 
     return [rm.room_id, rm.players.as_dict(), True]
 
-@socketio.on('connect to room')
+@socketio.on('connect_to_room')
 def connect_to_room(room_id, name):
 
     # get room
@@ -70,7 +70,7 @@ def connect_to_room(room_id, name):
 
     return [rm.players.as_dict(), False]
 
-@socketio.on('right swipe')
+@socketio.on('right_swipe')
 def right_swipe(data):
     # get room
     rm = get_room(data['room_id'])
@@ -118,19 +118,27 @@ def get_swipe_list():
     else:
         return None
 
+
+# def check_match_emit(common_movies, room_id):
+#         # print('sending message')
+#         # print(room_id.decode('utf-8'))
+#         socketio.emit('check_match', {'matched_movies': common_movies}, room=room_id.decode('utf-8'), broadcast=True)
+
+
+@app.route('/check_movies')
 def scheduled_checker():
-    print("SCHEDULLER WORKING: {}. AT TIME: {}".format(scheduler.get_jobs(), time.asctime()))
     all_rooms = db.keys('*')
     for room_id in all_rooms:
         # print(room_id)
         rm = get_room(room_id)
         rm.check_match()
-        print(rm.common_movies)
+        # This line doesn't work for some reason
+        socketio.emit('check_match', {'matched_movies': rm.common_movies}, room=rm.room_id, broadcast=True)
+    return 'checked'
 
-
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=scheduled_checker,trigger='interval',seconds=10,id=str(int(time.time())))
-scheduler.start()
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(func=scheduled_checker,trigger='interval',seconds=10,id=str(int(time.time())))
+# scheduler.start()
 
 
 

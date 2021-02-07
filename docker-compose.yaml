@@ -4,14 +4,14 @@ version: '3.3'
 services:
 
     front:
-        image: ommzzz/projects:movie-swiper-front-6a57832603457e93ac8f60479a3fd081a5fb3aaf
+        image: ommzzz/projects:movie-swiper-front-23cff71a368afbc470e31f9dbfbeea2a0d327c05
 
         container_name: MS-front
 
         restart: always
 
         ports:
-          - "3000:3000"
+          - "80:3000"
 
         environment:
           REACT_APP_API_URL: http://ugol.space
@@ -19,7 +19,7 @@ services:
 
 
     back:
-        image: ommzzz/projects:movie-swiper-back-6a57832603457e93ac8f60479a3fd081a5fb3aaf
+        image: ommzzz/projects:movie-swiper-back-23cff71a368afbc470e31f9dbfbeea2a0d327c05
         container_name: MS-back
 
         restart: always
@@ -49,3 +49,6 @@ services:
           - "9736:6379"
 
         command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+
+        environment:
+          ALLOW_EMPTY_PASSWORD: 'yes' 
