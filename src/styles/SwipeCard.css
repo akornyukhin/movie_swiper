@@ -41,17 +41,19 @@
 .movie {
     height: 120px;
     /* display: flex; */
+    max-width: 380px;
     text-align: center;
     margin: 0 30px;
     padding: 5px;
-    background-color: rebeccapurple;
+    background-color: rgba(25, 5, 68, 0.659);
     border-radius: 5px;
-    color: #fff;
+    color: white;
 }
 
 .buttons {
     margin: 20px;
     display: flex;
+    justify-content: center;
     /* position: fixed; */
     /* bottom: 0; */
 }
