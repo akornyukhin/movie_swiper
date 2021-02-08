@@ -49,3 +49,6 @@ services:
           - "9736:6379"
 
         command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+
+        environment:
+          ALLOW_EMPTY_PASSWORD: 'yes'
