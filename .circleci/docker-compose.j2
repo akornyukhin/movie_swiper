@@ -3,10 +3,10 @@ version: '3.3'
 
 services:
 
-    front:
+    react:
         image: ommzzz/projects:movie-swiper-front-{{ commit_hash }}
 
-        container_name: MS-front
+        container_name: ms-front
 
         restart: always
 
@@ -18,35 +18,40 @@ services:
           REACT_APP_FRONT_URL: http://{{ deploy_host_domain }}
 
 
-    back:
+    flask:
         image: ommzzz/projects:movie-swiper-back-{{ commit_hash }}
-        container_name: MS-back
+        container_name: ms-back
 
         restart: always
 
         ports:
-          - "127.0.0.1:5000:80"
+          - "127.0.0.1:5000:5000"
 
         environment:
           ## Flask configs
           FLASK_APP: app.py
-          FLASK_ENV: 'development'
+          FLASK_ENV: 'production'
 
           ## Useful variables
           SERVER_NAME: {{ deploy_host_domain }}
           FRONT_NAME: {{ deploy_host_domain }}
+
+          # Redis variables
+          REDIS_ADDR: 'redis'
+          REDIS_PORT: '6379'
+          REDIS_COMPOSE: 'true' # To set appropriate addr & port whether in container or not
 
         command: ['python3', '/app/app.py']
 
     redis:
         image: bitnami/redis:latest
 
-        container_name: MS-redis
+        container_name: ms-redis
 
         restart: always
 
         ports:
-          - "9736:6379"
+          - "127.0.0.1:6379:6379"
 
         command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
 

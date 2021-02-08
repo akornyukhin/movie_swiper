@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room
 import pickle
 import redis
@@ -11,6 +12,7 @@ import time
 
 
 app = Flask(__name__)
+cors = CORS(app, supports_credentials=True)
 socketio = SocketIO(app,
  debug=True,
  cors_allowed_origins="*",
@@ -18,11 +20,21 @@ socketio = SocketIO(app,
  logger=True,
  engineio_logger=True)
 
+REDIS_ADDR = os.environ.get('REDIS_ADDR'),
+REDIS_PORT = os.environ.get('REDIS_PORT'),
+REDIS_COMPOSE = os.environ.get('REDIS_COMPOSE')
 
-REDIS_TTL_S = 60*10 if os.environ.get('FLASK_DEV', False) else 60*60*12
-db = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
-movie_db = redis.StrictRedis(host='127.0.0.1', port=6379, db=1, decode_responses=True)
 
+def redis_init(redis_addr,redis_port):    
+    REDIS_TTL_S = 60*10 if os.environ.get('FLASK_DEV', False) else 60*60*12
+    db = redis.StrictRedis(host=redis_addr, port=redis_port, db=0)
+    movie_db = redis.StrictRedis(host=redis_addr, port=redis_port, db=1, decode_responses=True)
+    return db, movie_db
+
+if REDIS_COMPOSE != None:
+    db, movie_db = redis_init(REDIS_ADDR,REDIS_PORT)
+else:
+    db, movie_db = redis_init('127.0.0.1','9736')
 
 @app.route('/')
 def index():
