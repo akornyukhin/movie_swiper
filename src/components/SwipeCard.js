@@ -32,13 +32,9 @@ export default function SwipeCard() {
               })
         }
       }
-    // function onSwipe(direction, movieTitle) {
-    //     if (direction === 'right') {
-    //         socket.emit('right swipe', {"room_id": id, "movie_title": movieTitle}, (response) => {
-    //             console.log(response)
-    //           })
-    //     }
-    //   }
+
+    console.log(gameMovies)
+    console.log(gameMovies.findIndex(item => item.name === 'Interstellar'))
 
     function swipe(direction) {
         const cardsLeft = gameMovies.filter(movie => !alreadyRemoved.includes(movie.name))
@@ -92,7 +88,7 @@ export default function SwipeCard() {
                             <>
                             <div className='movie'>
                                 {movie}
-                                <p>Description</p>
+                                <p>{gameMovies[gameMovies.findIndex(item => item.name === `${movie}`)].description}</p>
                             </div>
                             </>
                         ))}

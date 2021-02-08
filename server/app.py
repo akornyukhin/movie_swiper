@@ -75,8 +75,6 @@ def right_swipe(data):
     # get room
     rm = get_room(data['room_id'])
 
-    print(rm.players.as_dict())
-
     # add movie to players list
     rm.right_swipe(request.sid, data['movie_title'])
     rm.check_match()
