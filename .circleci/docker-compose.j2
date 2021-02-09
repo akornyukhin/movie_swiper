@@ -14,8 +14,8 @@ services:
           - "127.0.0.1:3000:3000"
 
         environment:
-          REACT_APP_API_URL: http://api.{{ deploy_host_domain }}
-          REACT_APP_FRONT_URL: http://{{ deploy_host_domain }}
+          REACT_APP_API_URL: https://api.{{ deploy_host_domain }}
+          REACT_APP_FRONT_URL: https://{{ deploy_host_domain }}
 
 
     flask:
