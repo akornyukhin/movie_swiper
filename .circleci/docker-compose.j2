@@ -14,7 +14,7 @@ services:
           - "127.0.0.1:3000:3000"
 
         environment:
-          REACT_APP_API_URL: http://{{ deploy_host_domain }}
+          REACT_APP_API_URL: http://api.{{ deploy_host_domain }}
           REACT_APP_FRONT_URL: http://{{ deploy_host_domain }}
 
 
@@ -33,7 +33,7 @@ services:
           FLASK_ENV: 'production'
 
           ## Useful variables
-          SERVER_NAME: {{ deploy_host_domain }}
+          SERVER_NAME: api.{{ deploy_host_domain }}
           FRONT_NAME: {{ deploy_host_domain }}
 
           # Redis variables
@@ -42,6 +42,7 @@ services:
           REDIS_COMPOSE: 'true' # To set appropriate addr & port whether in container or not
 
         command: ['python3', '/app/app.py']
+
 
     redis:
         image: bitnami/redis:latest
