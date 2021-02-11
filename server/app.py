@@ -20,14 +20,14 @@ socketio = SocketIO(app,
  logger=True,
  engineio_logger=True)
 
-REDIS_ADDR = os.environ.get('REDIS_ADDR'),
-REDIS_PORT = os.environ.get('REDIS_PORT'),
+REDIS_ADDR = os.environ.get('REDIS_ADDR')
+REDIS_PORT = os.environ.get('REDIS_PORT')
 REDIS_COMPOSE = os.environ.get('REDIS_COMPOSE')
 
 
 REDIS_TTL_S = 60*10 if os.environ.get('FLASK_DEV', False) else 60*60*12
 db = redis.StrictRedis(host=REDIS_ADDR, port=REDIS_PORT, db=0)
-movie_db = redis.StrictRedis(host=REDIS_ADDR, port=REDIS_PORT, db=1, decode_responses=True)
+movie_db = redis.StrictRedis(host=REDIS_ADDR, port=REDIS_PORT , db=1, decode_responses=True)
 
 @app.route('/')
 def index():
@@ -130,6 +130,8 @@ def get_swipe_list():
 
 @app.route('/check_movies')
 def scheduled_checker():
+    print(REDIS_ADDR)
+    print(REDIS_PORT)
     all_rooms = db.keys('*')
     for room_id in all_rooms:
         # print(room_id)
