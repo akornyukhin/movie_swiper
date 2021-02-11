@@ -27,7 +27,7 @@ export default function SwipeCard() {
         if (direction === 'right') {
             socket.emit('right_swipe', {"room_id": id, "movie_title": movieTitle}, (response) => {
                 // console.log(response)
-                setMatchedMovies(response[1])
+                // setMatchedMovies(response[1])
                 // console.log(matchedMovies)
               })
         }
