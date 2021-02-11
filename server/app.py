@@ -82,7 +82,7 @@ def right_swipe(data):
 
     # add movie to players list
     rm.right_swipe(request.sid, data['movie_title'])
-    rm.check_match()
+    # rm.check_match()
     save_room(rm)
 
     return [rm.picked_movies, rm.common_movies]
@@ -130,8 +130,6 @@ def get_swipe_list():
 
 @app.route('/check_movies')
 def scheduled_checker():
-    print(REDIS_ADDR)
-    print(REDIS_PORT)
     all_rooms = db.keys('*')
     for room_id in all_rooms:
         # print(room_id)
