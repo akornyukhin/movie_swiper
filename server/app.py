@@ -25,16 +25,9 @@ REDIS_PORT = os.environ.get('REDIS_PORT'),
 REDIS_COMPOSE = os.environ.get('REDIS_COMPOSE')
 
 
-def redis_init(redis_addr,redis_port):    
-    REDIS_TTL_S = 60*10 if os.environ.get('FLASK_DEV', False) else 60*60*12
-    db = redis.StrictRedis(host=redis_addr, port=redis_port, db=0)
-    movie_db = redis.StrictRedis(host=redis_addr, port=redis_port, db=1, decode_responses=True)
-    return db, movie_db
-
-if REDIS_COMPOSE != None:
-    db, movie_db = redis_init(REDIS_ADDR,REDIS_PORT)
-else:
-    db, movie_db = redis_init('127.0.0.1','9736')
+REDIS_TTL_S = 60*10 if os.environ.get('FLASK_DEV', False) else 60*60*12
+db = redis.StrictRedis(host=REDIS_ADDR, port=REDIS_PORT, db=0)
+movie_db = redis.StrictRedis(host=REDIS_ADDR, port=REDIS_PORT, db=1, decode_responses=True)
 
 @app.route('/')
 def index():
