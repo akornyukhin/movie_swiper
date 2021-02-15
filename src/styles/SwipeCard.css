@@ -25,6 +25,7 @@
 
 .card > .info {
     display: grid;
+    grid-template-rows: 40% 60%;
     height: 30%;
     background-color: rgb(255, 255, 255);
     border-radius: 0 0 20px 20px;
@@ -34,12 +35,13 @@
 
 .card > .info > h4 {
     grid-column-start: 1;
-    grid-column-end: 2;
+    grid-column-end: 3;
     margin: 5px 0 0 10px;
     color: black;
 }
 
 .card > .info > h5 {
+    align-items: flex-end;
     grid-column-start: 3;
     grid-column-end: 4;
     margin: 5px 10px 0 0;
@@ -50,7 +52,7 @@
     grid-column-start: 1;
     grid-column-end: 4;
     font-size: small;
-    margin: 0 10px;
+    margin: 10px 10px 0 10px;
     color: black;
 }
 

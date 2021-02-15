@@ -67,8 +67,8 @@ export default function SwipeCard() {
                             style={{ backgroundImage: `url(${movie.poster_src})` }}
                             className='picture'></div>
                             <div className='info'>
-                                <h4>{movie.name}</h4>
-                                <h5>{movie.movie_rating}/10</h5>
+                                <h4>{movie.name} <p style={{margin: 0}}>{movie.movie_time}</p></h4>
+                                <h5>IMDB: {movie.movie_rating}/10</h5>
                                 <p>{movie.description}</p>
                             </div>                 
                         </div>      
@@ -89,7 +89,8 @@ export default function SwipeCard() {
                             <>
                             <div className='movie'>
                                 {movie}
-                                <p>{gameMovies[gameMovies.findIndex(item => item.name === `${movie}`)].description}</p>
+                                {/* <p>{gameMovies[gameMovies.findIndex(item => item.name === `${movie}`)].description}</p> */}
+                                {/* <a style={{margin: '5px'}}href={gameMovies[gameMovies.findIndex(item => item.name === `${movie}`)].movie_url}>Read more</a> */}
                             </div>
                             </>
                         ))}
