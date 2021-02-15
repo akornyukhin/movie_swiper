@@ -25,7 +25,6 @@ export default function Home() {
   
     function connectToRoom() {
       socket.emit('connect_to_room', roomId, name, (response) => {
-        console.log(response)
         history.push({pathname: `/lobby/${roomId}`, state: { players: response[0], admin: response[1] }})
       })
     }

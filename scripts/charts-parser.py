@@ -40,11 +40,14 @@ for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
         poster_id = poster_page.split('/')[-1]
         poster_src = poster_page_soup.select('img[data-image-id*="-curr"]')[0].get_attribute_list('src')[0]
 
+        movie_rating = movie_page_soup.find_all('body')[0].find_all('span', {'itemprop': 'ratingValue'})[0].contents[0]
+
         movie_dict = {
             'name': movie_name,
             'description': movie_description,
             'poster_src': poster_src,
-            'movie_url': movie_url
+            'movie_url': movie_url,
+            'movie_rating': movie_rating
         }
 
         for k,v in movie_dict.items():
@@ -58,7 +61,8 @@ for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
             'name': redis_db_response[b'name'].decode(),
             'description': redis_db_response[b'description'].decode(),
             'poster_src': redis_db_response[b'poster_src'].decode(),
-            'movie_url': redis_db_response[b'movie_url'].decode()
+            'movie_url': redis_db_response[b'movie_url'].decode(),
+            'movie_rating': redis_db_response[b'movie_rating'].decode()
         }
 
     movies_list.append(movie_dict)

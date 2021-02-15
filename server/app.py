@@ -50,7 +50,6 @@ def on_create(name):
     save_room(rm)
     emit('join_room', {'room': rm.room_id}, room=rm.room_id)
 
-
     return [rm.room_id, rm.players.as_dict(), True]
 
 @socketio.on('connect_to_room')
