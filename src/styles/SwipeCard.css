@@ -2,7 +2,7 @@
     position: relative;
     width: 350px;
     max-width: 85vw;
-    height: 55vh;
+    height: 65vh;
     border-radius: 20px;
     border: solid;
     border-width: thin;
@@ -41,7 +41,7 @@
 }
 
 .card > .info > h5 {
-    align-items: flex-end;
+    text-align: end;
     grid-column-start: 3;
     grid-column-end: 4;
     margin: 5px 10px 0 0;
