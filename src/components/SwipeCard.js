@@ -67,7 +67,7 @@ export default function SwipeCard() {
                             style={{ backgroundImage: `url(${movie.poster_src})` }}
                             className='picture'></div>
                             <div className='info'>
-                                <h4>{movie.name} <p style={{margin: 0}}>{movie.movie_time}</p></h4>
+                                <h4>{movie.name} <p style={{margin: 0, color: 'grey'}}>{movie.movie_time}</p></h4>
                                 <h5>IMDB: {movie.movie_rating}/10</h5>
                                 <p>{movie.description}</p>
                             </div>                 
