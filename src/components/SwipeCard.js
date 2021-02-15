@@ -27,18 +27,14 @@ export default function SwipeCard() {
         if (direction === 'right') {
             socket.emit('right_swipe', {"room_id": id, "movie_title": movieTitle}, (response) => {
                 // console.log(response)
-                setMatchedMovies(response[1])
+                // setMatchedMovies(response[1])
                 // console.log(matchedMovies)
               })
         }
       }
-    // function onSwipe(direction, movieTitle) {
-    //     if (direction === 'right') {
-    //         socket.emit('right swipe', {"room_id": id, "movie_title": movieTitle}, (response) => {
-    //             console.log(response)
-    //           })
-    //     }
-    //   }
+
+    console.log(gameMovies)
+    console.log(gameMovies.findIndex(item => item.name === 'Interstellar'))
 
     function swipe(direction) {
         const cardsLeft = gameMovies.filter(movie => !alreadyRemoved.includes(movie.name))
@@ -57,8 +53,6 @@ export default function SwipeCard() {
 
     return (
         <div>
-            {/* <Typography variant="h4" color="initial" align='center'>Tinder cards</Typography> */}
-            <Typography variant="h4" color="initial" align='center'>ID: {id}</Typography>
             <Grid container justifyContent='center' justify='center'>
                 {gameMovies.map((movie, index) => (
                     <TinderCard
@@ -68,13 +62,16 @@ export default function SwipeCard() {
                     onSwipe={(direction) => swiped(direction, movie.name)}
                     preventSwipe={['up', 'down']}>
                         <div 
-                        style={{ backgroundImage: `url(${movie.poster_src})` }}
                         className='card'>
-                            {/* <h3>{movie.name}</h3> */}
-                        </div>
-                        {/* <div>
-                            <h3>{movie.description}</h3>  
-                        </div> */}
+                            <div 
+                            style={{ backgroundImage: `url(${movie.poster_src})` }}
+                            className='picture'></div>
+                            <div className='info'>
+                                <h4>{movie.name}</h4>
+                                <h5>{movie.movie_rating}/10</h5>
+                                <p>{movie.description}</p>
+                            </div>                 
+                        </div>      
                     </TinderCard>
                 ))}  
             <div className='bottom'>
@@ -92,7 +89,7 @@ export default function SwipeCard() {
                             <>
                             <div className='movie'>
                                 {movie}
-                                <p>Description</p>
+                                <p>{gameMovies[gameMovies.findIndex(item => item.name === `${movie}`)].description}</p>
                             </div>
                             </>
                         ))}

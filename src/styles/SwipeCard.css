@@ -1,27 +1,57 @@
-
 .card {
     position: relative;
     width: 350px;
-    padding: 20px;
     max-width: 85vw;
     height: 55vh;
     border-radius: 20px;
-    background-size: cover;
-    background-position: center;
     border: solid;
     border-width: thin;
 }
 
-.swipe {
-    position: absolute;
+.picture {
+    /* position: relative; */
+    width: 350px;
+    max-width: 85vw;
+    height: 70%;
+    border-radius: 20px 20px 0 0;
+    background-size: cover;
+    background-position: center;
 }
 
-.card > h3 {
+.swipe {
     position: absolute;
-    bottom: 10px;
-    /* color: whitesmoke; */
+    margin-top: 10px;
+}
+
+.card > .info {
+    display: grid;
+    height: 30%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0 0 20px 20px;
+    border: solid;
+    border-width: thin;
+}
+
+.card > .info > h4 {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    margin: 5px 0 0 10px;
     color: black;
-    background-color: white;
+}
+
+.card > .info > h5 {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    margin: 5px 10px 0 0;
+    color: black;
+}
+
+.card > .info > p {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    font-size: small;
+    margin: 0 10px;
+    color: black;
 }
 
 .bottom {
@@ -41,17 +71,19 @@
 .movie {
     height: 120px;
     /* display: flex; */
+    max-width: 380px;
     text-align: center;
     margin: 0 30px;
     padding: 5px;
-    background-color: rebeccapurple;
+    background-color: rgba(25, 5, 68, 0.659);
     border-radius: 5px;
-    color: #fff;
+    color: white;
 }
 
 .buttons {
     margin: 20px;
     display: flex;
+    justify-content: center;
     /* position: fixed; */
     /* bottom: 0; */
 }

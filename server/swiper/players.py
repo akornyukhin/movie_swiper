@@ -7,8 +7,8 @@ class Players(object):
     self.reset()
 
   def add(self, sid, name):
-    self.all_players.add(name if name else sid)
-    self.players[sid] = name if name else sid
+    self.all_players.add(name if name else 'Player {0}'.format(len(self.all_players)))
+    self.players[sid] = name if name else 'Player {0}'.format(len(self.all_players))
 
   def remove(self, sid):
     if sid in self.players:

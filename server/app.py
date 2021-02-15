@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room
 import pickle
 import redis
@@ -11,6 +12,7 @@ import time
 
 
 app = Flask(__name__)
+cors = CORS(app, supports_credentials=True)
 socketio = SocketIO(app,
  debug=True,
  cors_allowed_origins="*",
@@ -18,11 +20,14 @@ socketio = SocketIO(app,
  logger=True,
  engineio_logger=True)
 
+REDIS_ADDR = os.environ.get('REDIS_ADDR')
+REDIS_PORT = os.environ.get('REDIS_PORT')
+REDIS_COMPOSE = os.environ.get('REDIS_COMPOSE')
+
 
 REDIS_TTL_S = 60*10 if os.environ.get('FLASK_DEV', False) else 60*60*12
-db = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
-movie_db = redis.StrictRedis(host='127.0.0.1', port=6379, db=1, decode_responses=True)
-
+db = redis.StrictRedis(host=REDIS_ADDR, port=REDIS_PORT, db=0)
+movie_db = redis.StrictRedis(host=REDIS_ADDR, port=REDIS_PORT , db=1, decode_responses=True)
 
 @app.route('/')
 def index():
@@ -50,7 +55,6 @@ def on_create(name):
     save_room(rm)
     emit('join_room', {'room': rm.room_id}, room=rm.room_id)
 
-
     return [rm.room_id, rm.players.as_dict(), True]
 
 @socketio.on('connect_to_room')
@@ -75,11 +79,9 @@ def right_swipe(data):
     # get room
     rm = get_room(data['room_id'])
 
-    print(rm.players.as_dict())
-
     # add movie to players list
     rm.right_swipe(request.sid, data['movie_title'])
-    rm.check_match()
+    # rm.check_match()
     save_room(rm)
 
     return [rm.picked_movies, rm.common_movies]
