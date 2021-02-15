@@ -45,7 +45,7 @@ export default function Home() {
       </Grid>
       <Grid item container direction='column' spacing={2}>
         <Grid item>
-          <TextField fullWidth={true} label="Room ID" value={roomId} onChange={e => { setRoomId(e.target.value) }} />
+          <TextField fullWidth={true} label="Room ID" value={roomId} onChange={e => { setRoomId(e.target.value.toUpperCase()) }} />
         </Grid>
         <Grid item>
           <TextField fullWidth={true} label="Your Name" value={name} onChange={e => { setName(e.target.value) }} />
