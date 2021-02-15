@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "IOT",
+      "name": "Movie_Swiper",
       "script": "npm",
       "args": "start"
     }

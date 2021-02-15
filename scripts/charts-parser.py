@@ -18,7 +18,7 @@ soup = BeautifulSoup(resp, 'html.parser')
 
 movies_list = []
 
-rd = redis.StrictRedis(host='127.0.0.1', port=6379, db=1)
+rd = redis.StrictRedis(host='127.0.0.1', port=9736, db=1)
 
 for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
     

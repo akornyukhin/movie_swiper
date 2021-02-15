@@ -3,38 +3,58 @@ version: '3.3'
 
 services:
 
-    front:
-        image: ommzzz/dshmelev:fitness-front-{{ commit_hash }}
+    react:
+        image: ommzzz/projects:movie-swiper-front-{{ commit_hash }}
 
-        container_name: fitness-APP-front
+        container_name: ms-front
 
         restart: always
 
         ports:
-          - "3000:3000"
+          - "127.0.0.1:3000:3000"
 
         environment:
-          REACT_APP_API_URL: http://{{ deploy_host_domain }}
-          REACT_APP_FRONT_URL: http://{{ deploy_host_domain }}
+          REACT_APP_API_URL: https://api.{{ deploy_host_domain }}
+          REACT_APP_FRONT_URL: https://{{ deploy_host_domain }}
 
 
-    back:
-        image: ommzzz/dshmelev:fitness-back-{{ commit_hash }}
-
-        container_name: fitness-APP-back
+    flask:
+        image: ommzzz/projects:movie-swiper-back-{{ commit_hash }}
+        container_name: ms-back
 
         restart: always
 
         ports:
-          - "5000:80"
+          - "127.0.0.1:5000:5000"
 
         environment:
           ## Flask configs
           FLASK_APP: app.py
-          FLASK_ENV: 'development'
+          FLASK_ENV: 'production'
 
           ## Useful variables
-          SERVER_NAME: {{ deploy_host_domain }}
+          SERVER_NAME: api.{{ deploy_host_domain }}
           FRONT_NAME: {{ deploy_host_domain }}
 
+          # Redis variables
+          REDIS_ADDR: 'redis'
+          REDIS_PORT: '6379'
+          REDIS_COMPOSE: 'true' # To set appropriate addr & port whether in container or not
+
         command: ['python3', '/app/app.py']
+
+
+    redis:
+        image: bitnami/redis:latest
+
+        container_name: ms-redis
+
+        restart: always
+
+        ports:
+          - "127.0.0.1:6379:6379"
+
+        command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+
+        environment:
+          ALLOW_EMPTY_PASSWORD: 'yes'
