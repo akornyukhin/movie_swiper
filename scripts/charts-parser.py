@@ -67,7 +67,7 @@ for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
             'movie_url': redis_db_response[b'movie_url'].decode(),
             'movie_rating': redis_db_response[b'movie_rating'].decode(),
             'movie_time': redis_db_response[b'movie_time'].decode()
-        } 
+        }
 
     movies_list.append(movie_dict)
 
