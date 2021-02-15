@@ -18,7 +18,7 @@ soup = BeautifulSoup(resp, 'html.parser')
 
 movies_list = []
 
-rd = redis.StrictRedis(host='127.0.0.1', port=9736, db=1)
+rd = redis.StrictRedis(host='127.0.0.1', port=6379, db=1)
 
 for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
     
@@ -42,12 +42,15 @@ for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
 
         movie_rating = movie_page_soup.find_all('body')[0].find_all('span', {'itemprop': 'ratingValue'})[0].contents[0]
 
+        movie_time = movie_page_soup.find_all('body')[0].find_all('div', {'class': 'subtext'})[0].find_all('time')[0].contents[0].strip()
+
         movie_dict = {
             'name': movie_name,
             'description': movie_description,
             'poster_src': poster_src,
             'movie_url': movie_url,
-            'movie_rating': movie_rating
+            'movie_rating': movie_rating,
+            'movie_time': movie_time
         }
 
         for k,v in movie_dict.items():
@@ -62,8 +65,9 @@ for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
             'description': redis_db_response[b'description'].decode(),
             'poster_src': redis_db_response[b'poster_src'].decode(),
             'movie_url': redis_db_response[b'movie_url'].decode(),
-            'movie_rating': redis_db_response[b'movie_rating'].decode()
-        }
+            'movie_rating': redis_db_response[b'movie_rating'].decode(),
+            'movie_time': redis_db_response[b'movie_time'].decode()
+        } 
 
     movies_list.append(movie_dict)
 
