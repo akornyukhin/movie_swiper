@@ -19,6 +19,7 @@ export default function Home() {
   
     function createRoom(event) {
       socket.emit('create', hostName, (response) => {
+        console.log(response)
         history.push({pathname: `/lobby/${response[0]}`, state: { players: response[1], admin: response[2] }})
       })
     }

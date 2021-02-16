@@ -51,8 +51,9 @@
 .card > .info > p {
     grid-column-start: 1;
     grid-column-end: 4;
+    padding: 2% 0 0 0;
     font-size: small;
-    margin: 10px 10px 0 10px;
+    margin: 0 10px 0 10px;
     color: black;
 }
 

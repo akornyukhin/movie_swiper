@@ -20,7 +20,7 @@ movies_list = []
 
 rd = redis.StrictRedis(host='127.0.0.1', port=6379, db=1)
 
-for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
+for title in soup.find_all('td', {'class': 'titleColumn'})[:250]:
     
     title_a = title.find('a')
     movie_url = domain_url + title_a.get_attribute_list('href')[0]
@@ -70,7 +70,3 @@ for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
         }
 
     movies_list.append(movie_dict)
-
-for d in movies_list:
-    print(json.dumps(d, indent=4, sort_keys=True))
-    print('\n')

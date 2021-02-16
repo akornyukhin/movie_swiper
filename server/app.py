@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit, join_room
 import pickle
+import random
 import redis
 import os
 import logging
@@ -31,9 +32,6 @@ def index():
 @socketio.on('create')
 def on_create(name):
 
-    # get movies meta from redis db-1
-    room_swipe_list = get_swipe_list()
-    
     # create new room
     rm = room.Room()
 
@@ -43,7 +41,6 @@ def on_create(name):
     # check if ID exists
     while(get_room(rm.room_id) is not None):
         rm.regenerate_id()
-
 
     # write room to redis
     join_room(rm.room_id)
@@ -103,8 +100,9 @@ def save_room(room):
 
 def get_swipe_list():
     swipe_list = []
-    keys_list = movie_db.keys('*')[:5]
-    for key in keys_list:
+    keys_list = movie_db.keys('*')
+    key_list_sample = random.sample(keys_list, 30)
+    for key in key_list_sample:
         movie_json = movie_db.hgetall(key)
         if movie_json:
             swipe_list.append(movie_json)
@@ -164,4 +162,4 @@ def scheduled_checker():
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', debug=True)#, use_reloader=False)
+    socketio.run(app, host='127.0.0.1', debug=True)#, use_reloader=False)

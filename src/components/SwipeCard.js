@@ -33,9 +33,6 @@ export default function SwipeCard() {
         }
       }
 
-    console.log(gameMovies)
-    console.log(gameMovies.findIndex(item => item.name === 'Interstellar'))
-
     function swipe(direction) {
         const cardsLeft = gameMovies.filter(movie => !alreadyRemoved.includes(movie.name))
         if (cardsLeft.length) {
@@ -90,7 +87,7 @@ export default function SwipeCard() {
                             <div className='movie'>
                                 {movie}
                                 {/* <p>{gameMovies[gameMovies.findIndex(item => item.name === `${movie}`)].description}</p> */}
-                                {/* <a style={{margin: '5px'}}href={gameMovies[gameMovies.findIndex(item => item.name === `${movie}`)].movie_url}>Read more</a> */}
+                                <p><a style={{margin: '5px'}}href={gameMovies[gameMovies.findIndex(item => item.name === `${movie}`)].movie_url} target="_blank" rel="noopener noreferrer">Read more</a></p>
                             </div>
                             </>
                         ))}
