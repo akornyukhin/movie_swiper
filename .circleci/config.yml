@@ -1,8 +1,5 @@
 version: 2.1
 
-# orbs:
-#   base: dialogue/base@1.9.0
-
 executors:
   docker-executor:
     docker:
@@ -29,8 +26,9 @@ jobs:
           command: |
             echo $DOCKER_HUB_PASSWORD
             echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
-            docker build -t ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1 .
-            docker push ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1
+            ls -la
+            docker build -t ommzzz/projects:movie-swiper-front-$CIRCLE_SHA1 -f ./.circleci/front/Dockerfile . 
+            docker push ommzzz/projects:movie-swiper-front-$CIRCLE_SHA1
 
   build-back:
     executor: docker-executor
@@ -42,8 +40,8 @@ jobs:
           name: Build Back and Push it to Docker Hub
           command: |
             echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin
-            docker build -t ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1 ./api
-            docker push ommzzz/dshmelev:movie-swiper-$CIRCLE_SHA1
+            docker build -t ommzzz/projects:movie-swiper-back-$CIRCLE_SHA1 -f ./.circleci/back/Dockerfile ./server
+            docker push ommzzz/projects:movie-swiper-back-$CIRCLE_SHA1 
 
   deploy-stage:
     executor: docker-ansible-executor
@@ -51,14 +49,13 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "8b:e3:65:42:f0:ff:74:56:e4:5b:a4:ff:f1:ab:d9:b5"
+            - "e3:36:95:cd:20:63:11:e6:a6:8f:18:28:88:41:77:b1"
       - run:
           name: Deploy with Ansible to Dev [ugol.space]
           command: |
-            cat ~/.ssh/config
             apk add ansible openssh-client
             mkdir -p ~/.ssh && chmod 700 ~/.ssh
-            cd ./deploy/ansible
+            cd .circleci/ansible
             ls -la
             ansible-playbook -i hosts.yaml deploy-docker-compose-play.yaml -e "\
             deploy_host=ugol \
@@ -66,7 +63,7 @@ jobs:
             commit_hash=$CIRCLE_SHA1 \
             docker_hub_user_var=$DOCKER_HUB_USER \
             docker_hub_pass_var=$DOCKER_HUB_PASSWORD \
-            docker_compose_template_path=/docker-compose.j2"
+            docker_compose_template_path=../docker-compose.j2"
 
           environment:
              ANSIBLE_HOST_KEY_CHECKING: 'False'
@@ -107,7 +104,7 @@ workflows:
           filters:
             branches:
               only:
-              - dopil
+              - main
 
       - build-back:
           requires:
@@ -117,7 +114,7 @@ workflows:
           filters:
             branches:
               only:
-              - dopil 
+              - main
 
       - deploy-stage:
           requires:
@@ -127,7 +124,8 @@ workflows:
           filters:
             branches:
               only:
-              - dopil
+              - main
+
 
       # - deploy-prod-approval:
       #     requires:
