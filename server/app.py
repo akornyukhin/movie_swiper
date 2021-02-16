@@ -23,9 +23,9 @@ socketio = SocketIO(app,
 
 REDIS_ADDR = os.environ.get('REDIS_ADDR')
 REDIS_PORT = os.environ.get('REDIS_PORT')
-REDIS_COMPOSE = os.environ.get('REDIS_COMPOSE')
 
-
+print(REDIS_ADDR)
+print(REDIS_PORT)
 REDIS_TTL_S = 60*10 if os.environ.get('FLASK_DEV', False) else 60*60*12
 db = redis.StrictRedis(host=REDIS_ADDR, port=REDIS_PORT, db=0)
 movie_db = redis.StrictRedis(host=REDIS_ADDR, port=REDIS_PORT , db=1, decode_responses=True)

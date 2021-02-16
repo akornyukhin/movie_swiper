@@ -16,9 +16,7 @@ function App() {
 
   const apiUrl = process.env.REACT_APP_API_URL
 
-
   const socket = io(`${apiUrl}`, {reconnectionAttempts: 5});
-
 
   const [gameData, setGameData] = useState([]);
 
