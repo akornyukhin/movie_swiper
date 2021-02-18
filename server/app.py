@@ -23,6 +23,7 @@ socketio = SocketIO(app,
 
 REDIS_ADDR = os.environ.get('REDIS_ADDR')
 REDIS_PORT = os.environ.get('REDIS_PORT')
+reloader_on = os.environ.get('RELOADER_ON')
 
 print(REDIS_ADDR)
 print(REDIS_PORT)
@@ -167,4 +168,4 @@ def scheduled_checker():
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='127.0.0.1', debug=True)#, use_reloader=False)
+    socketio.run(app, host='0.0.0.0', debug=True, use_reloader=reloader_on)

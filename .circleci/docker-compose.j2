@@ -39,7 +39,7 @@ services:
           # Redis variables
           REDIS_ADDR: 'redis'
           REDIS_PORT: '6379'
-          REDIS_COMPOSE: 'true' # To set appropriate addr & port whether in container or not
+          RELOADER_ON: 'False'
 
         command: ['python3', '/app/app.py']
 
