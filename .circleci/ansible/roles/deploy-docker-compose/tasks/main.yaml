@@ -1,3 +1,10 @@
+- name: Prune all images
+  docker_prune:
+    containers: yes
+    images: yes
+    images_filters:
+      dangling: false
+
 - name: Login to Docker Hub registry
   docker_login:
     username: '{{ docker_hub_user_var }}'
