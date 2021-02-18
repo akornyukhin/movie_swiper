@@ -5,6 +5,16 @@
     images_filters:
       dangling: false
 
+- name: Get antecedent front container
+  docker_container_info:
+    name: ms-front
+  register: antecedent_front
+
+- name: Get antecedent back container
+  docker_container_info:
+    name: ms-back
+  register: antecedent_back
+
 - name: Login to Docker Hub registry
   docker_login:
     username: '{{ docker_hub_user_var }}'
@@ -17,6 +27,8 @@
     owner: '{{ ansible_user }}'
     group: '{{ ansible_user }}'
     force: yes
+    backup: yes
+  register: docker_compose_templated
 
 - name: Bring app up with docker-compose file
   docker_compose:
@@ -26,3 +38,37 @@
 - name: docker-compose up output
   debug:
     var: output
+
+- name: Checking app health and handling errors
+  block:
+  - name: Check https endpoint
+    uri:
+      url: 'https://{{ deploy_host_domain }}'
+    register: result
+    retries: 30
+    delay: 2
+    until: result.status == 200
+
+  - debug:
+      msg: '{{ result }}'
+
+  - name: Check https api endpoint
+    uri:
+      url: 'https://api.{{ deploy_host_domain }}'
+    register: api_result
+    retries: 30
+    delay: 2
+    until: api_result.status == 200
+
+  - debug:
+      msg: '{{ api_result }}'
+  
+  rescue:
+  - name: Bring back justice
+    command: 'mv {{ docker_compose_templated.backup_file }} {{ docker_compose_file }}'
+    when: docker_compose_templated.backup_file is defined
+
+  - name: Bring antecedent containers up 
+    docker_compose:
+      project_src: '{{ app_directory }}'
+    register: output
