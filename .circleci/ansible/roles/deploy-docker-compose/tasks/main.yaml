@@ -52,16 +52,6 @@
   - debug:
       msg: '{{ result }}'
 
-  - name: Check https api endpoint
-    uri:
-      url: 'https://api.{{ deploy_host_domain }}'
-    register: api_result
-    retries: 30
-    delay: 2
-    until: api_result.status == 200
-
-  - debug:
-      msg: '{{ api_result }}'
   
   rescue:
   - name: Bring back justice
