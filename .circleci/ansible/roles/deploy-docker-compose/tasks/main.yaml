@@ -52,7 +52,6 @@
   - debug:
       msg: '{{ result }}'
 
-  
   rescue:
   - name: Bring back justice
     command: 'mv {{ docker_compose_templated.backup_file }} {{ docker_compose_file }}'

@@ -7,6 +7,8 @@ import { useSocket } from '../context/socket';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Carousel from 'react-material-ui-carousel';
+import Link from '@material-ui/core/Link';
+
 
 const alreadyRemoved = []
 export default function SwipeCard() {
@@ -48,6 +50,7 @@ export default function SwipeCard() {
         setMatchedMovies(response.matched_movies);
     })
 
+
     return (
         <div>
             <Grid container justifyContent='center' justify='center'>
@@ -66,6 +69,8 @@ export default function SwipeCard() {
                             <div className='info'>
                                 <h4>{movie.name} <p style={{margin: 0, color: 'grey', fontSize: 12}}>{movie.movie_time}</p></h4>
                                 <h5>IMDB: {movie.movie_rating}/10</h5>
+                                {/* Ya neebu, kak eto rabotaet. */}
+                                {/* <h5>{movie.movie_metacritic}</h5> */} 
                                 <p>{movie.description}</p>
                             </div>                 
                         </div>      

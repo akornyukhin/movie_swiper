@@ -20,7 +20,14 @@ movies_list = []
 
 rd = redis.StrictRedis(host='127.0.0.1', port=6379, db=1)
 
-for title in soup.find_all('td', {'class': 'titleColumn'})[:250]:
+def movieDateScrap(movie_a_list):
+    for a in movie_a_list:
+        href = a.get('href')
+        if href.endswith('releaseinfo'):
+            movie_release_date = a.contents[0].strip()
+            return movie_release_date
+
+for title in soup.find_all('td', {'class': 'titleColumn'})[:50]:
     
     title_a = title.find('a')
     movie_url = domain_url + title_a.get_attribute_list('href')[0]
@@ -44,13 +51,21 @@ for title in soup.find_all('td', {'class': 'titleColumn'})[:250]:
 
         movie_time = movie_page_soup.find_all('body')[0].find_all('div', {'class': 'subtext'})[0].find_all('time')[0].contents[0].strip()
 
+        movie_a_list = movie_page_soup.find_all('body')[0].find_all('div', {'class': 'subtext'})[0].find_all('a')
+
+        movie_date = movieDateScrap(movie_a_list)
+
+        movie_metacritic = movie_page_soup.find_all('div', {'class':'titleReviewBar'})[0].find_all('div', {'class':'metacriticScore'})[0].find_all('span')[0].contents[0]
+
         movie_dict = {
             'name': movie_name,
             'description': movie_description,
             'poster_src': poster_src,
             'movie_url': movie_url,
             'movie_rating': movie_rating,
-            'movie_time': movie_time
+            'movie_time': movie_time,
+            'movie_date': movie_date,
+            'movie_metacritic': movie_metacritic
         }
 
         for k,v in movie_dict.items():
@@ -66,7 +81,9 @@ for title in soup.find_all('td', {'class': 'titleColumn'})[:250]:
             'poster_src': redis_db_response[b'poster_src'].decode(),
             'movie_url': redis_db_response[b'movie_url'].decode(),
             'movie_rating': redis_db_response[b'movie_rating'].decode(),
-            'movie_time': redis_db_response[b'movie_time'].decode()
+            'movie_time': redis_db_response[b'movie_time'].decode(),
+            'movie_date': redis_db_response[b'movie_date'].decode(),
+            'movie_metacritic': redis_db_response[b'movie_metacritic'].decode()
         }
 
     movies_list.append(movie_dict)

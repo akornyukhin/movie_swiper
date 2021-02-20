@@ -38,4 +38,4 @@ package-lock.json
 *pycache*
 
 .certs/
-docker-compose.yaml
+docker-compose.yaml*
