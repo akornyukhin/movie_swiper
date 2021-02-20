@@ -1,9 +1,9 @@
-- name: Prune all images
-  docker_prune:
-    containers: yes
-    images: yes
-    images_filters:
-      dangling: false
+# - name: Prune all images
+#   docker_prune:
+#     containers: yes
+#     images: yes
+#     images_filters:
+#       dangling: false
 
 - name: Get antecedent front container
   docker_container_info:
