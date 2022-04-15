@@ -1,5 +1,0 @@
-app_directory: '/app'
-
-docker_compose_file: '{{ app_directory }}/docker-compose.yaml'
-
-remote_backup_directory: '/home/dms/backups/fitness-app/db'
